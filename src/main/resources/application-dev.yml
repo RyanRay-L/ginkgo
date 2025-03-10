@@ -1,0 +1,116 @@
+spring:
+  # security check.
+  security:
+    user:
+      name: root
+      password: root
+
+  cloud:
+    nacos:
+      discovery:
+        #register-enabled: false # 默认开启，不需要注册到Nacos注册中心则设为false。
+#        server-addr: 47.96.164.27:8848
+        server-addr: 47.108.191.183:8848
+        namespace: 2304362b-bbb2-499f-9fc3-f9a8c7fff48d
+        group: DEFAULT_GROUP
+        username: ${spring.cloud.nacos.username:nacos}
+        password: ${spring.cloud.nacos.password:nacos}
+#        secret-key: SecretKey01234567890123456789012345345678999987654901234567890123456789
+      config:
+        name: ginkgo
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+        file-extension: yaml
+        namespace: 2304362b-bbb2-499f-9fc3-f9a8c7fff48d
+        group: DEFAULT_GROUP
+        username: ${spring.cloud.nacos.username:nacos}
+        password: ${spring.cloud.nacos.password:nacos}
+        refresh-enabled: true #动态刷新。
+#        import:
+#          -optional:nacos:ginkgo.yaml
+
+  config:
+    import:
+      - optional:nacos:${spring.application.name}.${spring.cloud.nacos.config.file-extension}  # 导入 Nacos 配置
+#    import: nacos:ryan.yaml  # 导入 Nacos 配置
+
+  datasource:
+    url: jdbc:mysql://47.96.164.27:3306/ryan?useSSL=false&serverTimezone=UTC
+    username: ryan
+    password: RyanRay
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5 # 初始连接数
+      min-idle: 5 # 最小空闲连接数
+      max-active: 20 # 最大连接数
+      max-wait: 60000 # 获取连接的最大等待时间（毫秒）
+      time-between-eviction-runs-millis: 60000 # 检查空闲连接的间隔时间（毫秒）
+      min-evictable-idle-time-millis: 300000 # 连接的最小空闲时间（毫秒）
+      validation-query: SELECT 1 # 验证连接的 SQL
+      test-while-idle: true # 是否在空闲时检查连接
+      test-on-borrow: false # 是否在获取连接时检查连接
+      test-on-return: false # 是否在归还连接时检查连接
+      filters: stat,wall # 启用统计和防火墙功能
+      stat-view-servlet:
+        enabled: true # 启用 Druid 监控页面
+        url-pattern: /druid/*
+        login-username: admin # 监控页面登录用户名
+        login-password: admin # 监控页面登录密码
+      web-stat-filter:
+        enabled: true # 启用 Web 统计过滤器
+        url-pattern: /*
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+
+  jpa:
+#    entity-scan:
+#      packages: cn.ryanray.ryan.dao.po
+    hibernate:
+      ddl-auto: update # 自动建表模式，更新。
+    show-sql: true  # 打印SQL语句。
+    properties:
+      hibernate:
+        format_sql: true  # 格式化SQL语句。
+  #        dialect: org.hibernate.dialect.MySQL5Dialect
+
+  data:
+    redis:
+      host: 47.96.164.27
+      port: 6379
+      password: RyanRay_redis
+      database: 0
+      timeout: 2000
+      lettuce:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: -1
+
+logging:
+  level:
+    com.alibaba.nacos: DEBUG
+    com.mysql: DEBUG
+    org.hibernate.sql: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+
+## Nacos 会定期检查注册服务的健康状态。确保 Spring Boot 服务的健康检查接口正常工作。如果检查不通过，也不会注册到Nacos的注册中心。
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health
+
+# knife4j的增强配置，不需要增强可以不配。
+knife4j:
+  enable: true  # 生产环境中禁用，避免暴露API文档。
+  setting:
+    language: zh_cn   #中文
+    enable-swagger-models: true
+    enable-document-manage: true
+#    swagger-model-name: 银杏   # 模型的名称。默认为: Swagger Models。
+  basic: # 开启Swagger的Basic认证功能,默认是false。
+    enable: true
+    username: admin
+    password: 123456
+
