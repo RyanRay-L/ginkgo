@@ -11,7 +11,8 @@ spring:
         #register-enabled: false # 默认开启，不需要注册到Nacos注册中心则设为false。
 #        server-addr: 47.96.164.27:8848
         server-addr: 47.108.191.183:8848
-        namespace: 2304362b-bbb2-499f-9fc3-f9a8c7fff48d
+#        namespace: 2304362b-bbb2-499f-9fc3-f9a8c7fff48d
+        namespace: d462d9aa-e0ea-421c-91d6-9efd7c5cc3ee
         group: DEFAULT_GROUP
         username: ${spring.cloud.nacos.username:nacos}
         password: ${spring.cloud.nacos.password:nacos}
