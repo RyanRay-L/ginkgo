@@ -10,6 +10,21 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
+//    @Override
+//    public void configureClientInboundChannel(ChannelRegistration registration) {
+//        registration.interceptors(new ChannelInterceptor() {
+//            @Override
+//            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+//                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+//                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+//                    // 验证用户
+//
+//                }
+//                return message;
+//            }
+//        });
+//    }
+
     /**
      * 禁用组件。
      * @param http
@@ -31,9 +46,19 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-            http
-                    .authorizeHttpRequests((requests) -> requests
-                            .requestMatchers("/doc.html", "/webjars/**", "/v3/api-docs/**", "/swagger-resources/**", "/druid/**").permitAll() // 允许访问 Knife4j 相关端点
+//            http.authorizeHttpRequests((requests) -> requests
+//                            .requestMatchers("/doc.html", "/webjars/**", "/v3/api-docs/**", "/swagger-resources/**", "/druid/**", // 允许访问 Knife4j 相关端点
+//                                    "/actuator/**", // 安全检查的路径。
+//                                    "/ws/**"    // websocket测试接口的检查
+//                            ).permitAll()
+//                            .anyRequest().authenticated()
+//                    )
+//                    .csrf().disable();
+//            return http.build();
+
+            http.authorizeHttpRequests((requests) -> requests
+                            .requestMatchers("/**"    // 全放开，不检查。
+                            ).permitAll()
                             .anyRequest().authenticated()
                     )
                     .csrf().disable();
