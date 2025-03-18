@@ -1,43 +1,35 @@
 package cn.ryanray.ginkgo.dao.po;
 
+import cn.ryanray.ginkgo.base.pojo.entity.BaseDeletedEntity;
 import jakarta.persistence.*;
+import lombok.Data;
+import org.hibernate.annotations.Comment;
 
+@Data
 @Entity
 @Table(name = "users") // 指定表名
-public class User {
+public class User extends BaseDeletedEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // 主键自增
-    private Long id;
-
+    @Comment("名称")
     @Column(nullable = false) // 非空字段
     private String name;
 
+    @Comment("昵称")
+    @Column(columnDefinition = "VARCHAR(20) NULL DEFAULT NULL")
+    private String nickname;
+
+    @Column(columnDefinition = "INT NULL DEFAULT NULL")
+    private Integer age;
+
+    @Comment("邮箱")
     @Column(unique = true, nullable = false) // 唯一且非空
     private String email;
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+    @Comment("手机号")
+    @Column(columnDefinition = "VARCHAR(20) NULL DEFAULT NULL")
+    private String phoneNumber;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @Comment("性别")
+    @Column(nullable = false, columnDefinition = "INT NULL DEFAULT NULL")
+    private Integer gender;
 }
