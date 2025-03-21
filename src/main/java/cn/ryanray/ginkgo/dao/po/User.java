@@ -3,12 +3,21 @@ package cn.ryanray.ginkgo.dao.po;
 import cn.ryanray.ginkgo.base.pojo.entity.BaseDeletedEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Comment;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "users") // 指定表名
 public class User extends BaseDeletedEntity {
+
+    /**
+     * JPA规范要求，使用@Entity注解时，id不能通过继承实体类的父类获取。
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 主键自增
+    private Long id;
 
     @Comment("名称")
     @Column(nullable = false) // 非空字段
