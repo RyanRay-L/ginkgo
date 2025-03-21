@@ -1,9 +1,3 @@
-FROM ubuntu:latest
-LABEL authors="雷磊"
-
-ENTRYPOINT ["top", "-b"]
-
-
 # 使用官方OpenJDK镜像作为基础镜像
 FROM openjdk:17-jdk-alpine
 
